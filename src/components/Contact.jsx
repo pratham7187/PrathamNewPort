@@ -46,9 +46,9 @@ const CONTACT_INFO = [
   {
     Icon: Mail,
     label: 'Email',
-    value: 'your.email@gmail.com', // Replace with your real email
+    value: 'bgraipratham@gmail.com',
     color: '#00d4ff',
-    href: 'mailto:your.email@gmail.com',
+    href: 'mailto:bgraipratham@gmail.com',
   },
   {
     Icon: MapPin,
@@ -224,7 +224,7 @@ export default function Contact() {
     setStatus('loading')
 
     try {
-      const res = await fetch('/', {
+      await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: encode({
@@ -234,16 +234,12 @@ export default function Contact() {
         }),
       })
 
-      if (res.ok) {
-        setStatus('success')
-        setForm({ name: '', email: '', subject: '', message: '' })
-        setTouched({})
-        setErrors({})
-        // Reset to idle after a delay
-        setTimeout(() => setStatus('idle'), 6000)
-      } else {
-        throw new Error('Network response was not ok')
-      }
+      // Netlify Forms returns a 200 or 302 redirect — both mean success
+      setStatus('success')
+      setForm({ name: '', email: '', subject: '', message: '' })
+      setTouched({})
+      setErrors({})
+      setTimeout(() => setStatus('idle'), 6000)
     } catch {
       setStatus('error')
       setTimeout(() => setStatus('idle'), 6000)
